@@ -1,59 +1,49 @@
-/**
- * Created by doremonsun on 5/24/17.
- */
-
+const arr = [7, 5, 2, 6, 8, 0, 9, 7.5]
 class Node {
+    constructor(value) {
+        this.value = value;
+        //  this.left = null;
+        //  this.right = null;
+    }
+}
+class BinarySearchTree {
     constructor() {
-        this._root = null;
+        this.root = null;
     }
 
-    add(value) {
-        let data = []
-        let node = {
-            value: value,
-            left: null,
-            right: null
-        }
-        let current         //used to traverse the structure
-        if (this._root === null) {
-            this._root = node;
-        } else {
-            current = this._root;
-            // console.log('root', this._root);
-            while (true) {
-                //if the new value is less than this node's value, go left
-                if (value < current.value) {
-                    //if there's no left, then the new node belongs there
-                    if (current.left === null) {
-                        current.left = node;
-                        break;
-                    } else {
-                        console.log('value', value);
-                        current = current.left;
-                        console.log('current', current);
-                    }
-                    //if the new value is greater than this node's value, go right
-                } else if (value > current.value) {
-                    //if there's no right, then the new node belongs there
-                    if (current.right === null) {
-                        current.right = node;
-                        break;
-                    } else {
-                        current = current.right;
-                    }
-                    //if the new value is equal to the current one, just ignore
-                } else {
-                    break;
-                }
+//TODO: Chuyển code sang kiểu đệ quy
+    insert(value) {
+        let node = this
+        let side = 'root'
+//            console.log('node[side]', this.root);
+        while (node[side]) {// nếu tồn tại node mới chạy vào trong
+            /*
+             * Nó kiểm tra có node nào hay chưa?, chưa có thì tạo ra node.
+             * Khi có rồi thì chạy vào while, do node[side] lúc trước đã gán với class Node,sau đó sẽ so sánh value hiện tại với value của node trước đó.
+             * Nếu không bằng sẽ xuống điều kiện tiếp, nếu nhỏ hơn thì gán sang bên trái,nếu lớn hơn thì gán sang phải.
+             * Do đã tồn tại node lên vẫn chưa có điều kiện dừng, phải thêm 1 điều kiện để thoát khỏi vòng lặp
+             * Tiếp đó lại khởi tạo 1 node mới
+             * */
+            node = node[side];
+            // điều kiện thoat khỏi vòng lặp
+            if (value === node.value) {
+                return;
+            }
+//                side = value < node.value ? 'left' : 'right';
+            if (value < node.value) {
+                side = 'left'
+            } else {
+                side = 'right'
             }
         }
-        // data.push(current)
-        // console.log(data);
+        // khởi tạo 1 node mới
+        node[side] = new Node(value);
     }
 }
-let node = new Node()
-// const data = [5, -1, -3, 2, 6, 0, 1, 8, 9, 7]
-const data = [5, -1, -3, -4]
-for (let i = 0; i < data.length; i++) {
-    node.add(data[i])
+
+let tree = new BinarySearchTree()
+for (let i = 0; i < arr.length; i++) {
+    tree.insert(arr[i])
+//        tree.insert(Math.floor(Math.random() * 20));
 }
+document.write('<pre>' + JSON.stringify(tree, 0, 4) + '</pre>');
